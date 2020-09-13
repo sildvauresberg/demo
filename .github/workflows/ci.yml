@@ -20,6 +20,8 @@ jobs:
       - name: Push to GitHub Packages
         env:
           CR_PAT: ${{ secrets.GITHUB_TOKEN }}
+          TAG: docker.pkg.github.com/sildvauresberg/demo/demo-app
         run: |
-          echo $CR_PAT
-          echo ${{ secrets.GITHUB_TOKEN }}
+          echo $CR_PAT | docker login docker.pkg.github.com -u sildvauresberg --password-stdin
+          docker build -t $TAG .
+          docker push $TAG
