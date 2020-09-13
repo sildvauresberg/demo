@@ -1,0 +1,1 @@
+zip archive build/libs/*.jar Dockerfile
