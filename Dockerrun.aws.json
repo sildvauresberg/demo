@@ -1,4 +1,50 @@
 {
   "AWSEBDockerrunVersion": "2",
-  "Logging": "/var/log/levsha"
+  "containerDefinitions": [
+    {
+      "name": "demo-app",
+      "image": "ghcr.io/sildvauresberg/demo:latest",
+      "essential": true,
+      "memory": 128,
+      "portMappings": [
+        {
+          "hostPort": 8080,
+          "containerPort": 8080
+        }
+      ],
+      "environment": [
+        {
+          "name": "COLLECTOR_JPG_DIR",
+          "value": "$AWS_PROFILE"
+        }
+      ],
+      "mountPoints": [
+        {
+          "sourceVolume": "awseb-logs-demo-app",
+          "containerPath": "/var/log/demo-app"
+        }
+      ],
+      "links": [
+        "pg-12"
+      ]
+    },
+    {
+      "name": "pg-12",
+      "image": "postgres:12.4-alpine",
+      "essential": true,
+      "memory": 128,
+      "portMappings": [
+        {
+          "hostPort": 5432,
+          "containerPort": 5432
+        }
+      ],
+      "environment": [
+        {
+          "name": "POSTGRES_PASSWORD",
+          "value": "mysecretpassword"
+        }
+      ]
+    }
+  ]
 }
