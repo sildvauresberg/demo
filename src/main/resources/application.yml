@@ -1,2 +1,2 @@
 collector:
-  jpg-dir: ${user.home}/${COLLECTOR_JPG_DIR}/${AWS_PROFILE}
+  jpg-dir: ${user.home}/${COLLECTOR_JPG_DIR:-}/${AWS_PROFILE:-}

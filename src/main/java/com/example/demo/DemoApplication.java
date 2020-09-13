@@ -30,20 +30,12 @@ public class DemoApplication {
 
 	@GetMapping("/test")
 	public ResponseEntity<String> test() {
-		var maxFsNameLength = new AtomicInteger();
-		List<String> fsNames = StreamSupport.stream(
-			FileSystems.getDefault().getFileStores().spliterator(),
-			false
-		)
-			.map(FileStore::name)
-			.peek(name -> {
-				if (name.length() > maxFsNameLength.get())
-					maxFsNameLength.set(name.length());
-			})
-			.collect(Collectors.toList());
 		String rBody = Stream.concat(
-			fsNames.stream()
-				.map(name -> name.indent(maxFsNameLength.get() - name.length())),
+			StreamSupport.stream(
+				FileSystems.getDefault().getFileStores().spliterator(),
+				false
+			)
+				.map(FileStore::name),
 			Stream.of(
 				"dir=" + dir,
 				"accessKey=" + accessKey,
