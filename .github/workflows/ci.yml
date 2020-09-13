@@ -18,12 +18,8 @@ jobs:
       - name: Build with Gradle
         run: gradle build
       - name: Push to GitHub Packages
-        uses: docker/build-push-action@v2
         with:
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-          registry: docker.pkg.github.com
-          repository: sildvauresberg/demo/demo-app
-          tag_with_ref: true
-          secrets: |
-            GIT_AUTH_TOKEN=${{ secrets.GITHUB_TOKEN }}
+          CR_PAT: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo $CR_PAT
+          echo ${{ secrets.GITHUB_TOKEN }}
