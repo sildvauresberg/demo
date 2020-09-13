@@ -21,7 +21,7 @@ jobs:
         uses: docker/build-push-action@v1.1.1
         with:
           username: ${{ github.actor }}
-          password: ${{ secrets.CR_PAR }}
+          password: ${{ secrets.CR_PAT }}
           registry: ghcr.io
           repository: slick/demo
           tag_with_ref: true
