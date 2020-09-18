@@ -22,8 +22,9 @@ jobs:
         env:
           CR_PAT: ${{ secrets.CR_PAT }}
           TAG: ghcr.io/sildvauresberg/demo
+          USER: ${{ github.repository_owner }}
         run: |
-          echo ${{ secrets.GITHUB_ACTOR }}
+          echo $USER
           echo $CR_PAT | docker login ghcr.io -u sildvauresberg --password-stdin
           docker build -t $TAG .
           docker push $TAG

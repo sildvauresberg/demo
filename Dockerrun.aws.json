@@ -1,49 +1,66 @@
 {
   "AWSEBDockerrunVersion": "2",
+  "volumes": [
+    {
+      "name": "nginx-proxy-conf",
+      "host": {
+        "sourcePath": "/var/app/current/proxy/conf.d"
+      }
+    }
+  ],
   "containerDefinitions": [
     {
-      "name": "demo-app",
+      "name": "demo",
       "image": "ghcr.io/sildvauresberg/demo:latest",
       "essential": true,
-      "memory": 128,
+      "memory": 256,
       "portMappings": [
         {
           "hostPort": 8080,
           "containerPort": 8080
         }
       ],
+      "mountPoints": [
+        {
+          "sourceVolume": "awseb-logs-demo",
+          "containerPath": "/var/log/demo"
+        }
+      ],
       "environment": [
         {
           "name": "COLLECTOR_JPG_DIR",
           "value": "$AWS_PROFILE"
-        }
-      ],
-      "mountPoints": [
+        },
         {
-          "sourceVolume": "awseb-logs-demo-app",
-          "containerPath": "/var/log/demo-app"
+          "name": "AWS_PROFILE",
+          "value": "${AWS_PROFILE}"
         }
-      ],
-      "links": [
-        "pg-12"
       ]
     },
     {
-      "name": "pg-12",
-      "image": "postgres:12.4-alpine",
+      "name": "nginx-proxy",
+      "image": "nginx",
       "essential": true,
       "memory": 128,
       "portMappings": [
         {
-          "hostPort": 5432,
-          "containerPort": 5432
+          "hostPort": 80,
+          "containerPort": 80
         }
       ],
-      "environment": [
+      "mountPoints": [
         {
-          "name": "POSTGRES_PASSWORD",
-          "value": "mysecretpassword"
+          "sourceVolume": "nginx-proxy-conf",
+          "containerPath": "/etc/nginx/conf.d",
+          "readOnly": true
+        },
+        {
+          "sourceVolume": "awseb-logs-nginx-proxy",
+          "containerPath": "/var/log/nginx"
         }
+      ],
+      "links": [
+        "demo"
       ]
     }
   ]

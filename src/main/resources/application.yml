@@ -1,2 +1,8 @@
-collector:
-  jpg-dir: ${user.home}/${COLLECTOR_JPG_DIR:-}/${AWS_PROFILE:-}
+cloud:
+  aws:
+    credentials:
+      use-default-aws-credentials-chain: true
+    region:
+      use-default-aws-region-chain: true
+    stack:
+      auto: false

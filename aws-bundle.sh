@@ -1,1 +1,1 @@
-zip archive build/libs/*.jar Dockerfile
+zip archive Dockerrun.aws.json proxy
