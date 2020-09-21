@@ -1,1 +1,1 @@
-zip archive Dockerrun.aws.json proxy
+zip -r archive Dockerrun.aws.json proxy
